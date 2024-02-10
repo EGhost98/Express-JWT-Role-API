@@ -10,4 +10,14 @@ async function connect() {
     }
 }
 
-module.exports = { connect };
+async function disconnect() {
+    try {
+        await mongoose.disconnect();
+        console.log('Disconnected from MongoDB');
+    } catch (error) {
+        console.error('Error disconnecting from MongoDB:', error);
+        process.exit(1);
+    }
+}
+
+module.exports = { connect , disconnect};

@@ -32,12 +32,8 @@ yarn-error.log
 testem.log
 /typings
 
-# System Files
-.DS_Store
-Thumbs.db
-
 # encryption keys
-/config/*.key
+# /config/*.key
 
 # Logs
 server/logs/*.log
