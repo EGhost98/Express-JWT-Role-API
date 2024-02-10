@@ -11,7 +11,6 @@ async function Authenticate(req, res, next) {
         const blacklistedToken = await TokenBlacklist.findOne({ token });
         if (blacklistedToken) 
             return res.status(401).json({ message: 'Token invalid. Please log in again.' });
-        console.log(token);
         jwt.verify(token, JWT_SECRET, (err, user) => 
         {
         if (err) 
@@ -35,4 +34,4 @@ function isAdmin(req, res, next) {
     next();
 }
 
-module.exports = {Authenticate};
+module.exports = {Authenticate, isAdmin};

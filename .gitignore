@@ -38,3 +38,6 @@ Thumbs.db
 
 # encryption keys
 /config/*.key
+
+# Logs
+server/logs/*.log
