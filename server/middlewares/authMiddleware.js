@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'your_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET;
 const TokenBlacklist = require('../models/TokenBlacklist');
 
 async function Authenticate(req, res, next) {

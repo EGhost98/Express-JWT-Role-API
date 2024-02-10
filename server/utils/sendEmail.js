@@ -6,15 +6,15 @@ async function sendEmail({ to, subject, resetLink }) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'quake.dev08@gmail.com', 
-            pass: 'hpun iujm ingz nzek'
+            user: 'aditya09proud@gmail.com', 
+            pass: 'bews oqqz fykz sprq'
         }
     });
-    const emailTemplate = fs.readFileSync('./passwordResetTemplate.html', 'utf-8');
+    const emailTemplate = fs.readFileSync('server/utils/passwordResetTemplate.html', 'utf-8');
     const emailContent = emailTemplate.replace('%RESET_LINK%', resetLink);
      // Define the email options
     const mailOptions = {
-        from: 'EGhost <quake.dev08@gmail.com>', 
+        from: 'EGhost <aditya09proud@gmail.com>', 
         to, // Recipient email address
         subject, // Email subject
         html : emailContent // HTML content of the email body
@@ -23,10 +23,8 @@ async function sendEmail({ to, subject, resetLink }) {
     {
         if (error) {
             console.error(error);
-            res.status(500).send('Error sending email');
         } else {
             console.log('Email sent: ' + info.response);
-            res.send('Email sent successfully');
         }
     });
 }

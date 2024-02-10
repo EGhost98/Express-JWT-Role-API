@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/user');
 const TokenBlacklist = require('../models/TokenBlacklist');
 const { z } = require('zod');
 
-const JWT_SECRET = 'your_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const emailSchema = z.string().email();
 

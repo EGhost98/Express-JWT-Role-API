@@ -6,6 +6,6 @@ const passwordResetController = require('../controllers/passwordResetController'
 
 router.get('/profile', authMiddleware.Authenticate, profileController.userProfile);
 router.post('/forgot-password', passwordResetController.forgotPassword);
-router.post('/reset-password', passwordResetController.resetPassword);
+router.post('/reset-password/:userId/:token', passwordResetController.resetPassword);
 
 module.exports = router;
