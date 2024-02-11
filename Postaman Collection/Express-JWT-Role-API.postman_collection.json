@@ -1,0 +1,3250 @@
+{
+	"info": {
+		"_postman_id": "f21330df-257c-44ef-be23-dcf05216d453",
+		"name": "Express-JWT-Role-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32141365"
+	},
+	"item": [
+		{
+			"name": "Auth-Routes",
+			"item": [
+				{
+					"name": "POST /Register",
+					"item": [
+						{
+							"name": "Email and Password Missing",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required Content-Type header\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message field should not be empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData.message).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is in a valid format\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify that the response includes the expected error message\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.exist;",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/auth/register",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required Content-Type header\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field should not be empty\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.exist.and.to.not.be.empty;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Ensure that the response message is descriptive and user-friendly\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"invalid\",\r\n    \"password\" : \"{{user_password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/register",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register User Succesfully",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 201\", function () {",
+											"    pm.expect(pm.response.code).to.equal(201);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required Content-Type header with value application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is not empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.message).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response does not contain sensitive information\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.not.have.any.keys('password', 'creditCardNumber', 'securityCode', 'socialSecurityNumber');",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"{{user_email}}\",\r\n    \"password\" : \"{{user_password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/register",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Already Exists",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 400\", function () {",
+											"  pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required Content-Type header\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message field is present in the response\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.message).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a descriptive error message\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should be a descriptive error message\");",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"{{user_email}}\",\r\n    \"password\" : \"{{user_password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/register",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST /Login",
+					"item": [
+						{
+							"name": "Email and Password Missing",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required Content-Type header with value 'application/json'\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message field is not empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData.message).to.exist.and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a meaningful error message\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Error message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response does not contain sensitive information\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.not.have.property('password');",
+											"    pm.expect(responseData).to.not.have.property('token');",
+											"    pm.expect(responseData).to.not.have.property('creditCardNumber');",
+											"    // Add more sensitive properties as needed",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required Content-Type header\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field should not be empty\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.exist.and.to.not.be.empty;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response body contains the expected fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"Invalid\",\r\n    \"password\" : \"Invalid\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Not Found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Message field is present in the response\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('message');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Message field must be a non-empty string\", function () {\r",
+											"    pm.expect(pm.response.json().message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"invalid@invalid.com\",\r\n    \"password\" : \"invalid\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Credentials",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 401\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(401);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required Content-Type header\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is present in the response\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message field should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response body is in a valid JSON format\", function () {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"{{user_email}}\",\r\n    \"password\" : \"Invalid\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/login/",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logged in Succesfully",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields - message, access, and refresh\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.exist;",
+											"  pm.expect(responseData.access).to.exist;",
+											"  pm.expect(responseData.refresh).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Access and refresh tokens are not empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.access).to.exist.and.to.not.be.empty;",
+											"  pm.expect(responseData.refresh).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type header is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"var responseBody = pm.response.json();",
+											"",
+											"var accessToken = responseBody.access; ",
+											"var refreshToken = responseBody.refresh;",
+											"",
+											"// Set the collection variable",
+											"pm.collectionVariables.set(\"user_access_token\", accessToken);",
+											"pm.collectionVariables.set(\"user_refresh_token\", refreshToken);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"{{user_email}}\",\r\n    \"password\" : \"{{user_password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST /Refresh",
+					"item": [
+						{
+							"name": "No Refresh Token Provided",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 401\", function () {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type header is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response message field is not empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"",
+											"  pm.expect(responseData.message).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/auth/refresh",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required Content-Type header\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message should be descriptive and provide relevant information\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response body structure complies with the API documentation\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refresh\" : \"Invalid.Invalid.Invalid\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/refresh",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Token Refreshed",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields - message and access\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData).to.have.property('access');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Access token is in a valid format\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.access).to.be.a('string');\r",
+											"  pm.expect(responseData.access).to.match(/[a-zA-Z0-9]+/);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"var responseBody = pm.response.json();\r",
+											"var accessToken = responseBody.access; \r",
+											"pm.collectionVariables.set(\"user_access_token\", accessToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refresh\" : \"{{user_refresh_token}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/refresh",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST /Logout",
+					"item": [
+						{
+							"name": "No Auth Token Provided",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 401\", function () {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message field is present in the response\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.message).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response includes the expected error message for unauthorized access\", function () {",
+											"  const responseData = pm.response.json();",
+											"",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/auth/logout",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Auth Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 403\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(403);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify that the response body is not empty\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData).to.not.be.empty;\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "Invalid.Invalid.Invalid",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/auth/logout",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "No refresh Token Provided",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 401\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(401);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is present in the response\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is not empty\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData.message).to.exist.and.to.not.be.empty;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response body is not null\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.not.be.null;\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/auth/logout",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Succesfully Logged Out",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is present in the response\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refresh\" : \"{{user_refresh_token}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/logout",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Auth Token Blacklisted",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 403\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(403);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required field 'message'\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Ensure response does not contain sensitive information\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData).to.not.have.any.keys('password', 'token', 'creditCardNumber', 'ssn');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refresh\" : \"{{user_refresh_token}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/logout",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User-Routes",
+			"item": [
+				{
+					"name": "User /Login",
+					"item": [
+						{
+							"name": "Logged in as User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields - message, access, and refresh\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.exist;",
+											"  pm.expect(responseData.access).to.exist;",
+											"  pm.expect(responseData.refresh).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Access and refresh tokens are not empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.access).to.exist.and.to.not.be.empty;",
+											"  pm.expect(responseData.refresh).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type header is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"var responseBody = pm.response.json();",
+											"",
+											"var accessToken = responseBody.access; ",
+											"var refreshToken = responseBody.refresh;",
+											"",
+											"// Set the collection variable",
+											"pm.collectionVariables.set(\"user_access_token\", accessToken);",
+											"pm.collectionVariables.set(\"user_refresh_token\", refreshToken);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"{{user_email}}\",\r\n    \"password\" : \"{{user_password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET /Profile",
+					"item": [
+						{
+							"name": "No Auth Token Provided",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 401\", function () {",
+											"  pm.expect(pm.response.code).to.equal(401);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response content type is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message field is present in the response\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.message).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message field is a non-empty string\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is descriptive and user-friendly\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/user/profile",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Auth Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 403\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(403);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field should not be empty\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData.message).to.exist.and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Ensure the response does not contain any sensitive information\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData).to.not.have.any.keys('password', 'creditCardNumber', 'ssn', 'personalInfo');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify response message is descriptive and user-friendly\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "Invalid",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/user/profile",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Profile Retrieved",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"    pm.expect(responseData.user).to.exist.and.to.be.an('object');\r",
+											"    pm.expect(responseData.user._id).to.exist;\r",
+											"    pm.expect(responseData.user.email).to.exist;\r",
+											"    pm.expect(responseData.user.role).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Email is in a valid format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.email).to.be.a('string').and.to.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Role is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.user.role).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Role should not be empty\");\r",
+											"});\r",
+											"\r",
+											"var responseBody = pm.response.json();\r",
+											"\r",
+											"var userId = responseBody.user._id; \r",
+											"\r",
+											"pm.collectionVariables.set(\"Test_UserId\", userId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/user/profile",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PATCH /Profile",
+					"item": [
+						{
+							"name": "Name Not Provided",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required content type header set to 'application/json'\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is present in the response\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message content is as expected\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/user/profile",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Name Updated",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required Content-Type header with value application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is not empty\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.message).to.exist.and.to.not.be.empty;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify that the response does not contain any unexpected fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(Object.keys(responseData)).to.have.lengthOf(1);\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{User_Name}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/user/profile",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updated Profile",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData).to.have.property('user');\r",
+											"    pm.expect(responseData.user).to.have.property('_id');\r",
+											"    pm.expect(responseData.user).to.have.property('email');\r",
+											"    pm.expect(responseData.user).to.have.property('role');\r",
+											"    pm.expect(responseData.user).to.have.property('name');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Email is in a valid format\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.user.email).to.be.a('string').and.to.match(/^.+@.+\\..+$/);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Role is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.user).to.be.an('object');\r",
+											"  pm.expect(responseData.user.role).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Role should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Name is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.user.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+											"});\r",
+											"\r",
+											"var User_Name = pm.collectionVariables.get(\"User_Name\");\r",
+											"\r",
+											"pm.test(\"Name Updated Succesfully\", function () {\r",
+											"     var responseData = pm.response.json();\r",
+											"     pm.expect(responseData.user.name).to.equal(User_Name)\r",
+											"});\r",
+											"\r",
+											"var responseBody = pm.response.json();\r",
+											"\r",
+											"var userId = responseBody.user._id; \r",
+											"\r",
+											"pm.collectionVariables.set(\"Test_UserId\", userId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/user/profile",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST /Forgot-password",
+					"item": [
+						{
+							"name": "Email not provided",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required 'message' field\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"\r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type is application/json\", function () {\r",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/user/forgot-password",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 400\", function () {",
+											"  pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.message).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type header is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify that the response message provides a clear error message\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"Invalid\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/user/forgot-password",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Password Reset Email Sent",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields - message and resetLink\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"    pm.expect(responseData.resetLink).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"ResetLink is a valid URL format\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"\r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.resetLink).to.match(/^https?:\\/\\/[^\\s$.?#].[^\\s]*$/);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											"var responseBody = pm.response.json();\r",
+											"\r",
+											"var Pass_Reset_Link = responseBody.resetLink; \r",
+											"\r",
+											"pm.collectionVariables.set(\"Password_Reset_Link\", Pass_Reset_Link);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"{{user_email}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/user/forgot-password",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST /Reset-Passowrd/:userId/:token",
+					"item": [
+						{
+							"name": "Password Not Provided",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.message).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify that the response message is descriptive and provides helpful information\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{Password_Reset_Link}}",
+									"host": [
+										"{{Password_Reset_Link}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Token or UserID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 400\", function () {",
+											"  pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type header is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\" : \"{{New_User_Password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/user/reset-password/sad/asd",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"reset-password",
+										"sad",
+										"asd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Password Reset Succesful",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required Content-Type header with value application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is not empty\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.exist.and.to.not.be.empty;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message should be a string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\" : \"{{New_User_Password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Password_Reset_Link}}",
+									"host": [
+										"{{Password_Reset_Link}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Admin-Routes",
+			"item": [
+				{
+					"name": "User /Login",
+					"item": [
+						{
+							"name": "Logged In As User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields - message, access, and refresh\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.exist;",
+											"  pm.expect(responseData.access).to.exist;",
+											"  pm.expect(responseData.refresh).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Access and refresh tokens are not empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.access).to.exist.and.to.not.be.empty;",
+											"  pm.expect(responseData.refresh).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type header is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"var responseBody = pm.response.json();",
+											"",
+											"var accessToken = responseBody.access; ",
+											"var refreshToken = responseBody.refresh;",
+											"",
+											"pm.collectionVariables.set(\"user_access_token\", accessToken);",
+											"pm.collectionVariables.set(\"user_refresh_token\", refreshToken);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"{{user_email}}\",\r\n    \"password\" : \"{{New_User_Password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set UserID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"    pm.expect(responseData.user).to.exist.and.to.be.an('object');\r",
+											"    pm.expect(responseData.user._id).to.exist;\r",
+											"    pm.expect(responseData.user.email).to.exist;\r",
+											"    pm.expect(responseData.user.role).to.exist;\r",
+											"    pm.expect(responseData.user.name).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Email is in a valid format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.email).to.be.a('string').and.to.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Role is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.user.role).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Role should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Name is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.user.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"var responseBody = pm.response.json();\r",
+											"\r",
+											"var userId = responseBody.user._id; \r",
+											"\r",
+											"pm.collectionVariables.set(\"Test_UserId\", userId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/user/profile",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admin /Login",
+					"item": [
+						{
+							"name": "Logged In As Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields - message, access, and refresh\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.exist;",
+											"  pm.expect(responseData.access).to.exist;",
+											"  pm.expect(responseData.refresh).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message is a non-empty string\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Access and refresh tokens are not empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.access).to.exist.and.to.not.be.empty;",
+											"  pm.expect(responseData.refresh).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type header is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"var responseBody = pm.response.json();",
+											"",
+											"var accessToken = responseBody.access; ",
+											"var refreshToken = responseBody.refresh;",
+											"",
+											"",
+											"pm.collectionVariables.set(\"admin_access_token\", accessToken);",
+											"pm.collectionVariables.set(\"admin_refresh_token\", refreshToken);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"{{admin_email}}\",\r\n    \"password\" : \"{{admin_password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET /get-all-users",
+					"item": [
+						{
+							"name": "No Auth Token Provided",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type header is application/json\", function () {",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response message is not empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData.message).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response contains the required fields\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Message format is valid\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/admin/get-all-users",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"admin",
+										"get-all-users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Auth Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 403\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(403);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response body is in a valid JSON format\", function () {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "Invalid.Invalid.Invalid",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/admin/get-all-users",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"admin",
+										"get-all-users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Non-Admin User Denied",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 403\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(403);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required Content-Type header with value application/json\", function () {\r",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is present in the response\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/admin/get-all-users",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"admin",
+										"get-all-users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All User Retrieved as Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('array');\r",
+											"    responseData.forEach(function(user) {\r",
+											"        pm.expect(user).to.have.property('_id');\r",
+											"        pm.expect(user).to.have.property('email');\r",
+											"        pm.expect(user).to.have.property('password');\r",
+											"        pm.expect(user).to.have.property('role');\r",
+											"        pm.expect(user).to.have.property('__v');\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Email is in a valid email format\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('array');\r",
+											"  responseData.forEach(function(user) {\r",
+											"    pm.expect(user.email).to.match(/^.+@.+\\..+$/);\r",
+											"  });\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Password should not be empty\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    responseData.forEach(function(user) {\r",
+											"        pm.expect(user.password).to.exist.and.to.not.be.empty;\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Role is a valid role value\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('array');\r",
+											"    responseData.forEach(function(user) {\r",
+											"        pm.expect(user.role).to.be.oneOf(['admin', 'user', 'moderator']);\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/admin/get-all-users",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"admin",
+										"get-all-users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE /delete-users/:id",
+					"item": [
+						{
+							"name": "No Auth Token Provided",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 401\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(401);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response must have Content-Type header with value application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is present in the response\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/admin/delete-user/{{Test_UserId}}",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"admin",
+										"delete-user",
+										"{{Test_UserId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Auth Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 403\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(403);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify the request is forbidden for admin users\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(403);\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response time is within an acceptable range\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "Invalid",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/admin/delete-user/{{Test_UserId}}",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"admin",
+										"delete-user",
+										"{{Test_UserId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Non-Admin User Denied",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 403\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(403);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type is application/json\", function () {\r",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message field is present in the response\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify user with Test_UserId still exists after DELETE request\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(pm.response.code).to.equal(403);\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/admin/delete-user/{{Test_UserId}}",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"admin",
+										"delete-user",
+										"{{Test_UserId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Not Found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 404\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(404);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Error field is present in the response\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.error).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validate the error message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.error).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Error message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"User should not be deleted from the system\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(404);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/admin/delete-user/{{Invalid_UserID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"admin",
+										"delete-user",
+										"{{Invalid_UserID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Deleted Succesfully",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required Content-Type header\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message in the response is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message contains expected content\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validate user with ID Test_UserId has been successfully deleted\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/admin/delete-user/{{Test_UserId}}",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"admin",
+										"delete-user",
+										"{{Test_UserId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user_email",
+			"value": "user@test.com",
+			"type": "string"
+		},
+		{
+			"key": "user_password",
+			"value": "testuser1234",
+			"type": "string"
+		},
+		{
+			"key": "admin_email",
+			"value": "admin@test.com",
+			"type": "string"
+		},
+		{
+			"key": "admin_password",
+			"value": "adminuser1234",
+			"type": "string"
+		},
+		{
+			"key": "user_access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "admin_access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "admin_refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "Test_UserId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "User_Name",
+			"value": "TestUser1",
+			"type": "string"
+		},
+		{
+			"key": "Password_Reset_Link",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "New_User_Password",
+			"value": "TestUser789",
+			"type": "string"
+		},
+		{
+			"key": "Invalid_UserID",
+			"value": "65c8c9266e8439860f14f485",
+			"type": "string"
+		}
+	]
+}

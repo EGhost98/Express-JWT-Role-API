@@ -74,12 +74,12 @@ async function refreshToken(req, res) {
         const decoded = jwt.verify(refreshToken, JWT_SECRET);
         if(decoded.token_type !== 'refresh')
             return res.status(400).json({ message: 'Invalid refresh token.' });
-        const access = jwt.sign({ user: decoded.email, role: decoded.role }, JWT_SECRET, { expiresIn: '1h' });
-        res.header('Authorization', access).send({ "message" : "Token refreshed", access });
+        const access = jwt.sign({ user: decoded.email, role: decoded.role , token_type: 'access'}, JWT_SECRET, { expiresIn: '1h' });
+        res.json({ "message" : "Token refreshed", access });
     } 
     catch (error) 
     {
-        return res.status(400).send('Invalid refresh token.');
+        return res.status(400).json({ message: 'Invalid refresh token.' });
     }
 }
 
