@@ -8,9 +8,10 @@ const csurf = require('csurf');
 const csrfProtection = csurf({ cookie: true });
 const cors = require('cors');
 const loggingMiddleware = require('./middlewares/loggingMiddleware');
-const dotenv = require('dotenv');
 
+const dotenv = require('dotenv');
 dotenv.config();
+
 database.connect();
 
 app.use(loggingMiddleware);

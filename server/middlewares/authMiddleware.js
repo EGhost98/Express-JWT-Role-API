@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET;
 const TokenBlacklist = require('../models/TokenBlacklist');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 async function Authenticate(req, res, next) {
     try {
@@ -10,11 +13,13 @@ async function Authenticate(req, res, next) {
             return res.status(401).json({ message: 'No Authentication Token Provided.' });
         const blacklistedToken = await TokenBlacklist.findOne({ token });
         if (blacklistedToken) 
-            return res.status(401).json({ message: 'Token invalid. Please log in again.' });
+            return res.status(403).json({ message: 'Token Blaclisted. Please log in again.' });
         jwt.verify(token, JWT_SECRET, (err, user) => 
         {
         if (err) 
             return res.status(403).json({ message: 'Access Token Invalid. Log in Again' });
+        if (user.token_type !== 'access') 
+            return res.status(403).json({ message: 'Invalid Access Token ' });
         req.user = user;
         next();
     });

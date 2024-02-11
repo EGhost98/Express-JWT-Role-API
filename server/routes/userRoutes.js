@@ -5,6 +5,7 @@ const profileController = require('../controllers/profileController');
 const passwordResetController = require('../controllers/passwordResetController');
 
 router.get('/profile', authMiddleware.Authenticate, profileController.userProfile);
+router.patch('/profile', authMiddleware.Authenticate, profileController.updateUser);
 router.post('/forgot-password', passwordResetController.forgotPassword);
 router.post('/reset-password/:userId/:token', passwordResetController.resetPassword);
 
