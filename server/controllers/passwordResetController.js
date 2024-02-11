@@ -17,11 +17,14 @@ async function forgotPassword(req, res) {
             return res.status(400).json({ message: 'Email is required' });
         if (!emailSchema.safeParse(email).success) 
             return res.status(400).json({ message: 'Invalid email' });
+        const user = await userModel.findOne({email});
+        if (!user)
+            return res.status(404).json({ message: 'User not found' });
         const token = await passwordResetToken.saveToken(email, Date.now() + 600000);
         const host = req.get('host');
         const resetLink = `http://${host}/api/user/reset-password/${token['userId']}/${token['token']}`; 
-        
-        // Uncomment the following line to send the email
+
+        // // Uncomment the following line to send the email
         // await sendEmail({
         //     to: email,
         //     subject: 'Password Reset Link',

@@ -1,5 +1,7 @@
 const nodemailer = require('nodemailer');
 const fs = require('fs');
+const dotenv = require('dotenv');
+dotenv.config();
 
 async function sendEmail({ to, subject, resetLink }) {
     const transporter = nodemailer.createTransport({
@@ -13,7 +15,7 @@ async function sendEmail({ to, subject, resetLink }) {
     const emailContent = emailTemplate.replace('%RESET_LINK%', resetLink);
 
     const mailOptions = {
-        from: 'EGhost <aditya09proud@gmail.com>', 
+        from: 'process.env.EMAIL_ADDRESS', 
         to, // Recipient email address
         subject, // Email subject
         html : emailContent // HTML content of the email body
