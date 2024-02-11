@@ -58,6 +58,8 @@ To run the project, follow these steps (Prequisite : Have Node.Js Installed):
 
 ![image](https://github.com/EGhost98/Express-JWT-Role-API/assets/76267623/a926f123-e46d-47d8-a376-c14e2c3edfb2)
 
+`server\controllers\passwordResetController.js` - 
+
 The `forgotPassword` function in the authentication controller generates a password reset token and constructs a password reset link for users who have forgotten their passwords. However, the functionality to send password reset emails using Nodemailer has been commented out for local testing purposes. To enable email functionality in a production environment, uncomment the relevant code block responsible for sending emails and configure Nodemailer with valid SMTP credentials, and comment out the below response which is sending the reset link in response.
 
 
