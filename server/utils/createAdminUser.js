@@ -1,5 +1,5 @@
 const database = require('../config/database');
-const User = require('../models/User');
+const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
 // Connect to MongoDB
