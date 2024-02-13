@@ -177,4 +177,4 @@ The `PasswordResetToken` model is responsible for managing password reset tokens
 - **Method:** `DELETE`
 - **Description:** Delete a Particular User Model from Database.
 - **Request.Headers:** ```{ "Authorization" : Bearer {access token} } ``` Access Token for admin
-- **Request.Params:** ```{ :id - id of User Model to be deleted }
+- **Request.Params:** ```{ :id - id of User Model to be deleted }```
